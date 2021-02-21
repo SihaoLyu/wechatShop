@@ -1,24 +1,26 @@
-package ufl.edu.wechatShop.dao;
+package ufl.edu.wechatShop.service;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ufl.edu.wechatShop.BaseTest;
+import ufl.edu.wechatShop.dto.ShopExecution;
 import ufl.edu.wechatShop.entity.Area;
 import ufl.edu.wechatShop.entity.PersonInfo;
 import ufl.edu.wechatShop.entity.Shop;
 import ufl.edu.wechatShop.entity.ShopCategory;
+import ufl.edu.wechatShop.enums.ShopStateEnum;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.util.Date;
 
-public class ShopDaoTest extends BaseTest {
+public class ShopServiceTest extends BaseTest {
     @Autowired
-    private ShopDao shopDao;
+    private ShopService shopService;
+
     @Test
-    @Ignore
-    public void testInsertShop(){
+    public void testAddShop() {
         Shop shop = new Shop();
         PersonInfo owner = new PersonInfo();
         Area area = new Area();
@@ -29,25 +31,14 @@ public class ShopDaoTest extends BaseTest {
         shop.setOwner(owner);
         shop.setArea(area);
         shop.setShopCategory(shopCategory);
-        shop.setShopName("test");
-        shop.setShopDesc("test");
-        shop.setShopAddr("test");
-        shop.setShopImg("test");
+        shop.setShopName("test_service");
+        shop.setShopDesc("test_service");
+        shop.setShopAddr("test_service");
         shop.setCreateTime(new Date());
-        shop.setEnableStatus(1);
-        shop.setAdvice("test");
-        int effectedNum = shopDao.insertShop(shop);
-        assertEquals(1, effectedNum);
-    }
-    @Test
-//    @Ignore
-    public void testUpdateShop(){
-        Shop shop = new Shop();
-        shop.setShopId(1L);
-        shop.setShopDesc("update");
-        shop.setLastEditTime(new Date());
-        int res = shopDao.updateShop(shop);
-        assertEquals(1, res);
-
+        shop.setEnableStatus(ShopStateEnum.CHECK.getState());
+        shop.setAdvice("test_service");
+        File shopImg = new File("/Users/sihaolyu/Documents/testImage/fishman.jpg");
+        ShopExecution shopExecution = shopService.addShop(shop, shopImg);
+        assertEquals(ShopStateEnum.CHECK.getState(), shopExecution.getState());
     }
 }

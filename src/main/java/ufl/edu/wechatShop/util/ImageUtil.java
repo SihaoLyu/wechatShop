@@ -47,6 +47,25 @@ public class ImageUtil {
         }
         return relativeAddr;    // multi-deploy use
     }
+    public static String generateThumbnail(File thumbnail, String targetAddr) {
+        String realFileName = getRandomFileName();
+        String extension = getFileExtension(thumbnail);
+        makeDirPath(targetAddr);
+        String relativeAddr = targetAddr + realFileName + extension;
+        logger.error("current relativeAddr: " + relativeAddr);
+        File dest = new File(PathUtil.getImageBasePath() + relativeAddr);
+        logger.error("current completeAddr: " + PathUtil.getImageBasePath() + relativeAddr);    // PathUtil basePath != this.basePath
+        try {
+            Thumbnails.of(thumbnail).size(200, 200).
+                    watermark(Positions.BOTTOM_RIGHT, ImageIO.read(new File(basePath + "/watermark.jpg")), 0.25f).
+                    outputQuality(0.8f).toFile(dest);
+        }
+        catch (IOException e) {
+            logger.error(e.toString());
+            e.printStackTrace();
+        }
+        return relativeAddr;    // multi-deploy use
+    }
 
     /**
      * create dir of target addr if these dirs not exist
@@ -70,6 +89,11 @@ public class ImageUtil {
         String[] output = originalFileName.split(".");
         return output[output.length-1];
     }
+    private static String getFileExtension(File file) {
+        String originalFileName = file.getName();
+        String[] output = originalFileName.split(".");
+        return output[output.length-1];
+    }
 
     /**
      * generate random file name -- current yyyy/mm/dd/hh/mm/ss + 5-digit random num
@@ -82,11 +106,16 @@ public class ImageUtil {
         return nowTimeStr + ranNum;
     }
 
+    /**
+     * test method
+     * @param args
+     * @throws IOException
+     */
     public static void main(String[] args) throws IOException {
 //        String basePath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-        Thumbnails.of(new File("/Users/sihaolyu/Documents/testImage/fm.jpg"))
+        Thumbnails.of(new File("/Users/sihaolyu/Documents/testImage/fishman.jpg"))
         .size(200, 200).watermark(Positions.BOTTOM_RIGHT, ImageIO.read(new File(basePath + "/watermark.jpg")), 0.25f)
-        .outputQuality(0.8f).toFile("/Users/sihaolyu/Documents/testImage/fmNew.jpg");
+        .outputQuality(0.8f).toFile("/Users/sihaolyu/Documents/testImage/fishmanNew.jpg");
 
     }
 }
