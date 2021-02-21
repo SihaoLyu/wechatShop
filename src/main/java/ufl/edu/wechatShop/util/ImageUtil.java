@@ -86,13 +86,14 @@ public class ImageUtil {
      */
     private static String getFileExtension(CommonsMultipartFile cFile) {
         String originalFileName = cFile.getOriginalFilename();
-        String[] output = originalFileName.split(".");
-        return output[output.length-1];
+        return originalFileName.substring(originalFileName.lastIndexOf("."));
     }
     private static String getFileExtension(File file) {
         String originalFileName = file.getName();
-        String[] output = originalFileName.split(".");
-        return output[output.length-1];
+        return originalFileName.substring(originalFileName.lastIndexOf("."));
+        // TODO split fail
+//        String[] output = originalFileName.split(".");
+//        return output[output.length-1];
     }
 
     /**
