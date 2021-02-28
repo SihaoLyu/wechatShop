@@ -71,7 +71,7 @@ public class ImageUtil {
      * create dir of target addr if these dirs not exist
      * @param targetAddr (relative path)
      */
-    private static void makeDirPath(String targetAddr) {
+    public static void makeDirPath(String targetAddr) {
         String realFileParentPath = PathUtil.getImageBasePath() + targetAddr;
         File dirPath = new File(realFileParentPath);
         if (!dirPath.exists()) {
@@ -84,11 +84,11 @@ public class ImageUtil {
      * @param cFile
      * @return
      */
-    private static String getFileExtension(CommonsMultipartFile cFile) {
+    public static String getFileExtension(CommonsMultipartFile cFile) {
         String originalFileName = cFile.getOriginalFilename();
         return originalFileName.substring(originalFileName.lastIndexOf("."));
     }
-    private static String getFileExtension(File file) {
+    public static String getFileExtension(File file) {
         String originalFileName = file.getName();
         return originalFileName.substring(originalFileName.lastIndexOf("."));
         // TODO split fail
@@ -100,7 +100,7 @@ public class ImageUtil {
      * generate random file name -- current yyyy/mm/dd/hh/mm/ss + 5-digit random num
      * @return
      */
-    private static String getRandomFileName() {
+    public static String getRandomFileName() {
         // get 5-digit
         int ranNum = r.nextInt(89999) + 10000;
         String nowTimeStr = sDateFormat.format(new Date());

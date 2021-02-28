@@ -3,6 +3,7 @@ package ufl.edu.wechatShop.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import ufl.edu.wechatShop.dao.ShopDao;
 import ufl.edu.wechatShop.dto.ShopExecution;
 import ufl.edu.wechatShop.entity.Shop;
@@ -19,10 +20,10 @@ import java.util.Date;
 public class ShopServiceImpl implements ShopService {
     @Autowired
     private ShopDao shopDao;
-    
+
     @Override
     @Transactional
-    public ShopExecution addShop(Shop shop, File shopImg) {
+    public ShopExecution addShop(Shop shop, CommonsMultipartFile shopImg) {
         if (shop == null) {
             return new ShopExecution(ShopStateEnum.NULL_SHOP);
         }
@@ -60,7 +61,7 @@ public class ShopServiceImpl implements ShopService {
         return new ShopExecution(ShopStateEnum.CHECK, shop);
     }
 
-    private void addShopImg(Shop shop, File shopImg) {
+    private void addShopImg(Shop shop, CommonsMultipartFile shopImg) {
         // get relative addr of shop img category
         String dest = PathUtil.getShopImagePath(shop.getShopId());
         String shopImgAddr = ImageUtil.generateThumbnail(shopImg, dest);
